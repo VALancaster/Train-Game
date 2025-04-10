@@ -30,3 +30,4 @@ C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\refin
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.pdb
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.genruntimeconfig.cache
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ref\ComputerGraphics_lab2.dll
+C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.sourcelink.json

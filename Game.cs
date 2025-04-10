@@ -17,6 +17,7 @@ namespace CG_lab2
     {
         private Shader shaderProgram;
         private Camera camera;
+        private bool showStats = false;
         // private Train train;
 
         private int width, height;
@@ -109,12 +110,22 @@ namespace CG_lab2
             22, 23, 20,
         }; // порядок отрисовки вершин
 
+        private List<Matrix4> railTransforms = new List<Matrix4>(); // рельсы
+
         private int VAO; // объект массива вершин (дескриптор)
         private int VBO; // объект буфера вершин (дескриптор)
         private int EBO; // объект буфера элементов (дескриптор)
         private int textureID; // дескриптор текстуры
         private int textureVBO; // объект буфера вершин для текстуры (дескриптор)
         private float yRot = 0f;
+
+        private float trainSpeed = 0f;
+        private float trainPosition = 0f;
+        private float acceleration = 500f;
+        private float maxSpeed = 1000f;
+        private float friction = 0.98f;
+        private float railCount = 100; // число рельсов
+        private float spacing = 1.0f; // расстояние между рельсами
 
         public Game(int width, int height) : base
         (GameWindowSettings.Default, new NativeWindowSettings() { Title = "3D Train Game" })
@@ -126,6 +137,7 @@ namespace CG_lab2
 
         protected override void OnLoad()
         {
+
             VAO = GL.GenVertexArray(); // создание объекта массива вершин
             VBO = GL.GenBuffer(); // cоздание объекта буффера вершин
 
@@ -166,7 +178,7 @@ namespace CG_lab2
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
             StbImage.stbi_set_flip_vertically_on_load(1); // включение вертикального отражения при загрузке
-            ImageResult boxTexture = ImageResult.FromStream(File.OpenRead("../../../Textures/wall.jpg"), ColorComponents.RedGreenBlueAlpha);
+            ImageResult boxTexture = ImageResult.FromStream(File.OpenRead("../../../Textures/bombardiro_crocodilo.jpg"), ColorComponents.RedGreenBlueAlpha);
             // загружает файл изображения в память и конвертирует его в формат с компонентами RGBA
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, boxTexture.Width, boxTexture.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, boxTexture.Data);
             // передает данные изображения в GPU
@@ -176,11 +188,16 @@ namespace CG_lab2
 
             GL.Enable(EnableCap.DepthTest); // выполнение depth-testing
 
-            camera = new Camera(width, height, Vector3.Zero);
+            camera = new Camera(width, height, new Vector3(0f, 2f, 5f)); // cмотрим сверху и немного сзади
+
+            for (int i = 0; i <= railCount; i++)
+            {
+                // Matrix4 rail = Matrix4.CreateScale(1f, 0.05f, 0.5f) * Matrix4.CreateTranslation(i, -0.55f, -1.5f);
+                Matrix4 transform = Matrix4.CreateTranslation(0f, 0f, -i * spacing);
+                railTransforms.Add(transform);
+            }
+
             CursorState = CursorState.Grabbed;
-
-
-
             // ShowVersionInfo();
 
             // GL.DeleteProgram(shaderProgram); // высвобождение ресурсов - НИ В КОЕМ СЛУЧАЕ НЕЛЬЗЯ ДЕЛАТЬ
@@ -207,40 +224,84 @@ namespace CG_lab2
             GL.BindTexture(TextureTarget.Texture2D, textureID); // привязка текстуры
 
             // Создание матриц
-            Matrix4 model = Matrix4.Identity;
+            // Matrix4 model = Matrix4.Identity;
             Matrix4 view = camera.GetViewMatrix();
             Matrix4 projection = camera.GetProjection();
-            Matrix4 translation = Matrix4.CreateTranslation(0f, 0f, -1.5f);
+            // Matrix4 translation = Matrix4.CreateTranslation(trainPosition, 0f, -1.5f);
 
-            model = Matrix4.CreateRotationY(yRot);
-            yRot += 0.001f;
-            model *= translation;
+
 
             // отправка на GPU
-            int modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
+            // int modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
             int viewLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "view");
             int projectionLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "projection");
 
             // отправка данных в uniforms
-            GL.UniformMatrix4(modelLocation, true, ref model);
+            // GL.UniformMatrix4(modelLocation, true, ref model);
             GL.UniformMatrix4(viewLocation, true, ref view);
             GL.UniformMatrix4(projectionLocation, true, ref projection);
 
             GL.BindVertexArray(VAO); // привязка VAO
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
+            // GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            foreach (var railModel in railTransforms)
+            {
+                Matrix4 model = railModel;
+                int modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
+                GL.UniformMatrix4(modelLocation, true, ref model);
+
+                GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            }
+
+            Matrix4 trainModel = Matrix4.CreateRotationY(yRot) * Matrix4.CreateTranslation(0f, 0f, trainPosition);
+            int trainModelLoc = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
+            GL.UniformMatrix4(trainModelLoc, true, ref trainModel);
+
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+
             Context.SwapBuffers();
             base.OnRenderFrame(args);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args) // обновление каждого кадра
         {
+            if (KeyboardState.IsKeyPressed(Keys.Tab))
+                showStats = !showStats; 
+            if (showStats)
+            {
+                Console.Clear();
+                Console.WriteLine($"Position: {trainPosition:F2}");
+                Console.WriteLine($"Speed: {trainSpeed:F2}");
+                Console.WriteLine($"FPS: {(1.0 / args.Time):F2}");
+            }
+
             if (KeyboardState.IsKeyDown(Keys.Escape)) // выход по нажатию клавиши Escape
                 Close();
+
             MouseState mouse = MouseState;
             KeyboardState input = KeyboardState;
+
+            if (input.IsKeyDown(Keys.W) || input.IsKeyDown(Keys.Up)) // обработка движения паровоза
+            {
+                trainSpeed += acceleration * (float)args.Time;
+                if (trainSpeed > maxSpeed)
+                    trainSpeed = maxSpeed;
+            }
+            else if (input.IsKeyDown(Keys.S) || input.IsKeyDown(Keys.Down))
+            {
+                trainSpeed -= acceleration * (float)args.Time;
+                if (trainSpeed < 0f)
+                    trainSpeed = 0f;
+            }
+
+            trainSpeed *= friction; // трение (замедление)
+
+            trainPosition += trainSpeed * (float)args.Time; // обновление позиции
+
+            // camera.Update(input, mouse, args);
+
             base.OnUpdateFrame(args);
-            camera.Update(input, mouse, args);
         }
 
         protected override void OnResize(ResizeEventArgs e) // изменение размера окна
@@ -257,5 +318,4 @@ namespace CG_lab2
             Console.WriteLine($"GLSL:{GL.GetString(StringName.ShadingLanguageVersion)}"); // версия GLSL
         }
     }
-
 }
