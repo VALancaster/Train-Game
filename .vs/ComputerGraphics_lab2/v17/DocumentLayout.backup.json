@@ -1,0 +1,126 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\shader.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\shader.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\shader.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\shader.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d3750d8a-574b-4fb3-b7e2-aa8af40e8231}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Shader.frag",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.frag",
+              "RelativeDocumentMoniker": "Shaders\\Shader.frag",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.frag",
+              "RelativeToolTip": "Shaders\\Shader.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-04-10T13:51:28.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Shader.vert",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.vert",
+              "RelativeDocumentMoniker": "Shaders\\Shader.vert",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.vert",
+              "RelativeToolTip": "Shaders\\Shader.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-04-10T13:50:03.284Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Camera.cs",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Camera.cs",
+              "RelativeDocumentMoniker": "Camera.cs",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Camera.cs",
+              "RelativeToolTip": "Camera.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T13:48:09.03Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Shader.cs",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shader.cs",
+              "RelativeDocumentMoniker": "Shader.cs",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shader.cs",
+              "RelativeToolTip": "Shader.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T13:47:32.05Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Game.cs",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Game.cs",
+              "RelativeDocumentMoniker": "Game.cs",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Game.cs",
+              "RelativeToolTip": "Game.cs",
+              "ViewState": "AgIAAJcAAACAmZmZmVklwKgAAABhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T13:44:30.923Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T13:42:33.485Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
