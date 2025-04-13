@@ -11,14 +11,19 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using StbImageSharp;
 
-namespace CG_lab2
+using ComputerGraphics_lab2;
+
+namespace ComputerGraphics_lab2
 {
     internal class Game : GameWindow
     {
+        
         private Shader shaderProgram;
         private Camera camera;
         private bool showStats = false;
-        // private Train train;
+
+        private Texture trainTexture;
+        private Texture railTexture;
 
         private int width, height;
 
@@ -115,7 +120,6 @@ namespace CG_lab2
         private int VAO; // объект массива вершин (дескриптор)
         private int VBO; // объект буфера вершин (дескриптор)
         private int EBO; // объект буфера элементов (дескриптор)
-        private int textureID; // дескриптор текстуры
         private int textureVBO; // объект буфера вершин для текстуры (дескриптор)
         private float yRot = 0f;
 
@@ -135,56 +139,48 @@ namespace CG_lab2
             this.width = width;
         }
 
-        protected override void OnLoad()
+        private void InitializeBuffers()
         {
-
             VAO = GL.GenVertexArray(); // создание объекта массива вершин
             VBO = GL.GenBuffer(); // cоздание объекта буффера вершин
+            EBO = GL.GenBuffer(); // cоздание объекта буффера элементов
+            textureVBO = GL.GenBuffer(); // cоздание объекта буфера вершин для текстуры
 
+
+            // вершины
             GL.BindBuffer(BufferTarget.ArrayBuffer, VBO); // привязка VBO к целевому буфферу вершин
             GL.BufferData(BufferTarget.ArrayBuffer, vertices.Count * Vector3.SizeInBytes, vertices.ToArray(), BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw
             GL.BindVertexArray(VAO); // привязка VAO 
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-
             GL.EnableVertexAttribArray(0); // включение атрибута вершин
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0); // Отвязка VBO
 
-            EBO = GL.GenBuffer(); // cоздание объекта буффера элементов
+            // примитивы
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO); // привязка EBO к целевому буфферу элементов
             GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0); // отвязка EBO
 
-            textureVBO = GL.GenBuffer(); // cоздание объекта буфера вершин для текстуры
+            // текстурные координаты
             GL.BindBuffer(BufferTarget.ArrayBuffer, textureVBO); // привязка VBO к целевому буферу вершин
             GL.BufferData(BufferTarget.ArrayBuffer, texCoords.Count * Vector2.SizeInBytes, texCoords.ToArray(), BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw 
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0); // Настройка атрибута вершин (показываем на слот номер 1)
             GL.EnableVertexAttribArray(1); // включение атрибута вершин
 
+            GL.BindVertexArray(0); // Отвязка VAO
+        }
+
+        protected override void OnLoad()
+        {
+            InitializeBuffers();
+
             shaderProgram = new Shader(); // cоздание шейдерной программы
             shaderProgram.LoadShaders(); // загрузка шейдеров
 
-            textureID = GL.GenTexture(); // создание пустой текстуры
-
-            GL.ActiveTexture(TextureUnit.Texture0); // активирует текстурный блок 0
-            GL.BindTexture(TextureTarget.Texture2D, textureID); // привязывает текстуру к текстурному блоку
-
-            // параметры текстуры
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-
-            StbImage.stbi_set_flip_vertically_on_load(1); // включение вертикального отражения при загрузке
-            ImageResult boxTexture = ImageResult.FromStream(File.OpenRead("../../../Textures/bombardiro_crocodilo.jpg"), ColorComponents.RedGreenBlueAlpha);
-            // загружает файл изображения в память и конвертирует его в формат с компонентами RGBA
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, boxTexture.Width, boxTexture.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, boxTexture.Data);
-            // передает данные изображения в GPU
-            GL.BindTexture(TextureTarget.Texture2D, 0); // отвязка текстуры от текстурного блока
-
-            GL.BindVertexArray(0); // Отвязка VAO
+            trainTexture = new Texture("../../../Textures/bombardiro_crocodilo.jpg");
+            railTexture = new Texture("../../../Textures/wall.jpg");
 
             GL.Enable(EnableCap.DepthTest); // выполнение depth-testing
 
@@ -199,9 +195,8 @@ namespace CG_lab2
 
             CursorState = CursorState.Grabbed;
             // ShowVersionInfo();
-
-            // GL.DeleteProgram(shaderProgram); // высвобождение ресурсов - НИ В КОЕМ СЛУЧАЕ НЕЛЬЗЯ ДЕЛАТЬ
         }
+
 
         protected override void OnUnload()
         {
@@ -210,55 +205,64 @@ namespace CG_lab2
             GL.DeleteBuffer(VAO);
             GL.DeleteBuffer(VBO);
             GL.DeleteBuffer(EBO);
-            GL.DeleteTexture(textureID);
+
+            trainTexture.Delete();
+            railTexture.Delete();
 
             shaderProgram.DeleteShader();
         }
 
         protected override void OnRenderFrame(FrameEventArgs args) // рендеринг каждого кадра
         {
-            GL.ClearColor(0.3f, 0.3f, 1f, 1f); // цвет фона
+            GL.ClearColor(0f, 0.75f, 0.9f, 1f); // цвет фона
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             shaderProgram.UseShader(); // активирует шейдерную программу
-            GL.BindTexture(TextureTarget.Texture2D, textureID); // привязка текстуры
+            shaderProgram.SetMatrix4("view", camera.GetViewMatrix());
+            shaderProgram.SetMatrix4("projection", camera.GetProjection());
 
-            // Создание матриц
-            // Matrix4 model = Matrix4.Identity;
-            Matrix4 view = camera.GetViewMatrix();
-            Matrix4 projection = camera.GetProjection();
+            //     // Создание матриц
+            //     // Matrix4 model = Matrix4.Identity;
+            // Matrix4 view = camera.GetViewMatrix();
+            // Matrix4 projection = camera.GetProjection();
             // Matrix4 translation = Matrix4.CreateTranslation(trainPosition, 0f, -1.5f);
 
 
-
-            // отправка на GPU
-            // int modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
-            int viewLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "view");
-            int projectionLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "projection");
-
             // отправка данных в uniforms
             // GL.UniformMatrix4(modelLocation, true, ref model);
-            GL.UniformMatrix4(viewLocation, true, ref view);
-            GL.UniformMatrix4(projectionLocation, true, ref projection);
+            // GL.UniformMatrix4(viewLocation, true, ref view);
+            // GL.UniformMatrix4(projectionLocation, true, ref projection);
 
             GL.BindVertexArray(VAO); // привязка VAO
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
             // GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
 
+
+            // Рендер паровоза
+            trainTexture.Use(TextureUnit.Texture0); // использование текстуры паровоза
+            shaderProgram.SetInt("texture0", 0);
+            Matrix4 trainTransform = Matrix4.CreateTranslation(0f, 0f, -trainPosition);
+            shaderProgram.SetMatrix4("model", trainTransform); // установка матрицы модели
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
+            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            // Рендер рельс
+            railTexture.Use(TextureUnit.Texture1); // использование текстуры рельсов
+            shaderProgram.SetInt("texture0", 1);
             foreach (var railModel in railTransforms)
             {
-                Matrix4 model = railModel;
-                int modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
-                GL.UniformMatrix4(modelLocation, true, ref model);
-
+                shaderProgram.SetMatrix4("model", railModel); // установка матрицы модели
                 GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
             }
 
+            /*
             Matrix4 trainModel = Matrix4.CreateRotationY(yRot) * Matrix4.CreateTranslation(0f, 0f, trainPosition);
             int trainModelLoc = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
             GL.UniformMatrix4(trainModelLoc, true, ref trainModel);
 
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            */
+            GL.BindVertexArray(0);
 
             Context.SwapBuffers();
             base.OnRenderFrame(args);
@@ -317,5 +321,30 @@ namespace CG_lab2
             Console.WriteLine($"OpenGL:{GL.GetString(StringName.Version)}"); // версия OpenGL
             Console.WriteLine($"GLSL:{GL.GetString(StringName.ShadingLanguageVersion)}"); // версия GLSL
         }
+
+        /*
+        private void DrawBox(Matrix4 transform)
+        {
+            shaderProgram.UseShader();
+
+            // устновка uniform-переменных
+            shaderProgram.SetMatrix4("model", transform);
+            shaderProgram.SetMatrix4("view", camera.GetViewMatrix());
+            shaderProgram.SetMatrix4("projection", camera.GetProjection());
+
+            GL.BindVertexArray(VAO); // привязка VAO куба
+
+            if (texture != 0) // Активируем текстуру, если она используется
+            {
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.BindTexture(TextureTarget.Texture2D, texture);
+                shaderProgram.SetInt("tex0", 0); // если uniform sampler2D tex0
+            }
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 36); // рисуем куб
+
+            GL.BindVertexArray(0); // отвязываем VAO
+        }
+        */
     }
 }

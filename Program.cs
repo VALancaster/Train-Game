@@ -1,4 +1,4 @@
-﻿using CG_lab2;
+﻿using ComputerGraphics_lab2;
 
 class Program
 {

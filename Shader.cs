@@ -10,7 +10,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace CG_lab2
+namespace ComputerGraphics_lab2
 {
     public class Shader
     {
@@ -80,6 +80,42 @@ namespace CG_lab2
         public void DeleteShader()
         {
             GL.DeleteShader(shaderHandle);
+        }
+
+        public void SetMatrix4(string name, Matrix4 matrix) //  установка матрицы (uniform-переменной) в шейдер (из C# в GLSL)
+        {
+            int location = GL.GetUniformLocation(shaderHandle, name);
+            if (location == -1)
+                Console.WriteLine($"Uniform '{name}' not found in shader.");
+            else
+                GL.UniformMatrix4(location, true, ref matrix);
+        }
+
+        public void SetVector3(string name, Vector3 vector) // установка вектора (uniform-переменной) в шейдер (из C# в GLSL)
+        {
+            int location = GL.GetUniformLocation(shaderHandle, name);
+            if (location == -1)
+                Console.WriteLine($"Uniform '{name}' not found in shader.");
+            else
+                GL.Uniform3(location, vector);
+        }
+
+        public void SetFloat(string name, float value) // установка float-числа (uniform-переменной) в шейдер (из C# в GLSL)
+        {
+            int location = GL.GetUniformLocation(shaderHandle, name);
+            if (location == -1)
+                Console.WriteLine($"Uniform '{name}' not found in shader.");
+            else
+                GL.Uniform1(location, value);
+        }
+
+        public void SetInt(string name, int value) // установка int-числа (uniform-переменной) в шейдер (из C# в GLSL)
+        {
+            int location = GL.GetUniformLocation(shaderHandle, name);
+            if (location == -1)
+                Console.WriteLine($"Uniform '{name}' not found in shader.");
+            else
+                GL.Uniform1(location, value);
         }
     }
 }

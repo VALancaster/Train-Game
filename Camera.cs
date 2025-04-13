@@ -10,7 +10,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace CG_lab2
+namespace ComputerGraphics_lab2
 {
     internal class Camera
     {
