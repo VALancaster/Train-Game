@@ -130,6 +130,7 @@ namespace ComputerGraphics_lab2
         private float friction = 0.98f;
         private float railCount = 100; // число рельсов
         private float spacing = 1.0f; // расстояние между рельсами
+        private float distanceBehind = 5f; // расстояние, на котором камера будет позади поезда
 
         public Game(int width, int height) : base
         (GameWindowSettings.Default, new NativeWindowSettings() { Title = "3D Train Game" })
@@ -241,7 +242,7 @@ namespace ComputerGraphics_lab2
             // Рендер паровоза
             trainTexture.Use(TextureUnit.Texture0); // использование текстуры паровоза
             shaderProgram.SetInt("texture0", 0);
-            Matrix4 trainTransform = Matrix4.CreateTranslation(0f, 0f, -trainPosition);
+            Matrix4 trainTransform = Matrix4.CreateScale(1f, 2f, 4f)*Matrix4.CreateTranslation(0f, 0f, -trainPosition);
             shaderProgram.SetMatrix4("model", trainTransform); // установка матрицы модели
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
@@ -303,7 +304,7 @@ namespace ComputerGraphics_lab2
 
             trainPosition += trainSpeed * (float)args.Time; // обновление позиции
 
-            // camera.Update(input, mouse, args);
+            camera.position = new Vector3(0f, 2f, - trainPosition + distanceBehind);
 
             base.OnUpdateFrame(args);
         }
@@ -322,29 +323,5 @@ namespace ComputerGraphics_lab2
             Console.WriteLine($"GLSL:{GL.GetString(StringName.ShadingLanguageVersion)}"); // версия GLSL
         }
 
-        /*
-        private void DrawBox(Matrix4 transform)
-        {
-            shaderProgram.UseShader();
-
-            // устновка uniform-переменных
-            shaderProgram.SetMatrix4("model", transform);
-            shaderProgram.SetMatrix4("view", camera.GetViewMatrix());
-            shaderProgram.SetMatrix4("projection", camera.GetProjection());
-
-            GL.BindVertexArray(VAO); // привязка VAO куба
-
-            if (texture != 0) // Активируем текстуру, если она используется
-            {
-                GL.ActiveTexture(TextureUnit.Texture0);
-                GL.BindTexture(TextureTarget.Texture2D, texture);
-                shaderProgram.SetInt("tex0", 0); // если uniform sampler2D tex0
-            }
-
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 36); // рисуем куб
-
-            GL.BindVertexArray(0); // отвязываем VAO
-        }
-        */
     }
 }
