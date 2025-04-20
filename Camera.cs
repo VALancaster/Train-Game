@@ -37,6 +37,11 @@ namespace ComputerGraphics_lab2
                 UpdateVectors();
             }
 
+            public void ResetFirstMove() // будет сообщать камере, что следующее движение будет первым, чтобы она не прыгнула из-за накопленного смещения
+            {
+                this.firstMove = true;
+            }
+
             public Matrix4 GetViewMatrix()
             {
                 return Matrix4.LookAt(position, position + front, up);
@@ -82,6 +87,7 @@ namespace ComputerGraphics_lab2
                     // Инициализируем lastPos текущей позицией мыши
                     lastPos = new Vector2(mouse.X, mouse.Y);
                     firstMove = false;
+                    return;
                 }
                 else
                 {

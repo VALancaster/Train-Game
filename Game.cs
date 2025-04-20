@@ -25,7 +25,10 @@ namespace ComputerGraphics_lab2
         private bool showStats = false;
 
         private Texture trainTexture;
-        private Texture railTexture; 
+        //private Texture railTexture; 
+        private Texture railsCenterTexture;
+        private Texture groundLeftTexture;
+        private Texture groundRightTexture;
         private CubemapTexture cubemapTexture;
 
         private int width, height;
@@ -205,7 +208,7 @@ namespace ComputerGraphics_lab2
         private int railTexCoordVBO;
         private int railEBO;
 
-        private int numSegments = 10; // Количество сегментов (текстур на плоскости)
+        private int numSegments = 20; // Количество сегментов (текстур на плоскости)
         private float segmentLength = 100.0f; // Длина одного сегмента
         private float[] segmentZOffsets; // Массив для хранения Z-координаты начала каждого сегмента
 
@@ -216,7 +219,8 @@ namespace ComputerGraphics_lab2
         private float friction = 0.98f;
         private float railCount = 100; // число рельсов
         private float spacing = 1.0f; // расстояние между рельсами
-        private float distanceBehind = 8f; // расстояние, на котором камера будет позади поезда
+        private float distanceBehind = 12f; // расстояние, на котором камера будет позади поезда
+        private bool isInputCaptured = true; // Флаг захвата ввода
 
         public Game(int width, int height) : base
         (GameWindowSettings.Default, new NativeWindowSettings() { Title = "3D Train Game" })
@@ -322,7 +326,10 @@ namespace ComputerGraphics_lab2
             planeShader = new Shader("Plane.vert", "Plane.frag");
 
             trainTexture = new Texture("../../../Textures/bombardiro_crocodilo.jpg");
-            railTexture = new Texture("../../../Textures/wide_desert_rails.jpg");
+            // railTexture = new Texture("../../../Textures/wide_desert_rails.jpg");
+            railsCenterTexture = new Texture("../../../Textures/rails_center.jpg");
+            groundLeftTexture = new Texture("../../../Textures/ground_left.jpg");
+            groundRightTexture = new Texture("../../../Textures/ground_right.jpg");
             string[] faces = new string[]
             {
                 "../../../Textures/Skybox/right.jpg",  // GL_TEXTURE_CUBE_MAP_POSITIVE_X (Right +X)
@@ -339,13 +346,23 @@ namespace ComputerGraphics_lab2
             camera = new Camera(width, height, new Vector3(0f, 2f, 5f)); // cмотрим сверху и немного сзади
 
             segmentZOffsets = new float[numSegments];
+            float initialForwardOffset = (float)(numSegments / 2) * segmentLength;
             for (int i = 0; i < numSegments; i++)
             {
-                // Расставляем сегменты друг за другом, начиная от Z=0 и уходя в минус
-                segmentZOffsets[i] = -i * segmentLength; // начало i-ого сегмента
+                // Расставляем сегменты друг за другом, начиная от initialForwardOffset и уходя в минус
+                segmentZOffsets[i] = initialForwardOffset - i * segmentLength; // начало i-ого сегмента
             }
 
-            CursorState = CursorState.Grabbed;
+            if (isInputCaptured)
+            {
+                CursorState = CursorState.Grabbed;
+            }
+            else
+            {
+                CursorState = CursorState.Normal;
+            }
+
+            camera.ResetFirstMove();
             // ShowVersionInfo();
         }
 
@@ -362,7 +379,10 @@ namespace ComputerGraphics_lab2
             GL.DeleteBuffer(skyboxVBO);
 
             trainTexture.Delete();
-            railTexture.Delete();
+            // railTexture.Delete();
+            railsCenterTexture.Delete();
+            groundLeftTexture.Delete();
+            groundRightTexture.Delete();
             cubemapTexture.Delete();
 
             shaderProgram.DeleteShader();
@@ -390,7 +410,8 @@ namespace ComputerGraphics_lab2
             GL.BindVertexArray(VAO); // Привязываем VAO паровоза
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
 
-            Matrix4 trainTransform = Matrix4.CreateScale(1.5f, 2f, 3f)*Matrix4.CreateTranslation(0f, 0f, -trainPosition);
+            // поезд не симметричен относительно центра рельсов (подвину чуть вправо по x)
+            Matrix4 trainTransform = Matrix4.CreateScale(4f, 4f, 4f)*Matrix4.CreateTranslation(0.3f, 0f, -trainPosition); 
             shaderProgram.SetMatrix4("model", trainTransform); // установка матрицы модели
             GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
 
@@ -399,11 +420,70 @@ namespace ComputerGraphics_lab2
             planeShader.SetMatrix4("view", viewMatrix);
             planeShader.SetMatrix4("projection", projectionMatrix);
             planeShader.SetInt("texture0", 0);
-            railTexture.Use(TextureUnit.Texture0); // использование текстуры рельсов
+            // railTexture.Use(TextureUnit.Texture0); // использование текстуры рельсов
 
             GL.BindVertexArray(railVAO); // Привязываем VAO плоскости рельсов
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, railEBO); // Привязываем EBO плоскости рельсов
 
+            // --- Параметры плиток ---
+            float tileWidthCenter = 30.0f;  // Ширина центральной плитки (рельсы) в мире
+            float tileWidthSide = 15.0f;   // Ширина БОКОВОЙ плитки (земля) в мире
+            float groundOffsetY = -1.0f; // Чуть ниже рельсов
+            float railsOffsetY = -1.0f;  // Положение рельсов
+            int numSideTiles = 50; // Сколько плиток земли рисовать С КАЖДОЙ стороны (подбери)
+
+            // --- Масштаб текстурных координат для ОДНОЙ плитки ---
+            // Мы НЕ тайлим текстуру ВНУТРИ одной плитки, поэтому масштаб = 1
+            planeShader.SetVector2("texScale", Vector2.One);
+            // Смещение текстурных координат не нужно для этого способа
+            // planeShader.SetVector2("texOffset", Vector2.Zero);
+
+            // --- Основной цикл по СЕГМЕНТАМ ВДОЛЬ пути ---
+            for (int segmentIndex = 0; segmentIndex < numSegments; segmentIndex++)
+            {
+                // Z-координата центра текущего сегмента
+                float currentSegmentZ = segmentZOffsets[segmentIndex] - segmentLength / 2.0f;
+
+                // --- 1. Рисуем ЛЕВЫЕ плитки земли ---
+                groundLeftTexture.Use(TextureUnit.Texture0); // Используем текстуру левой земли
+                Matrix4 leftTileScale = Matrix4.CreateScale(tileWidthSide, 1.0f, segmentLength); // Масштаб для одной левой плитки
+                for (int tileIndex = 1; tileIndex <= numSideTiles; tileIndex++)
+                {
+                    // X-координата центра текущей левой плитки
+                    float currentTileX = -(tileWidthCenter / 2.0f) - (tileIndex - 0.5f) * tileWidthSide;
+                    Matrix4 leftTileTranslate = Matrix4.CreateTranslation(currentTileX, groundOffsetY, currentSegmentZ);
+                    Matrix4 leftTileModel = leftTileScale * leftTileTranslate;
+                    planeShader.SetMatrix4("model", leftTileModel);
+                    GL.DrawElements(PrimitiveType.Triangles, railPlaneIndices.Length, DrawElementsType.UnsignedInt, 0);
+                }
+
+                // --- 2. Рисуем ЦЕНТРАЛЬНУЮ плитку (рельсы) ---
+                railsCenterTexture.Use(TextureUnit.Texture0); // Используем текстуру рельсов
+                Matrix4 centerTileScale = Matrix4.CreateScale(tileWidthCenter, 1.0f, segmentLength); // Масштаб для центральной плитки
+                Matrix4 centerTileTranslate = Matrix4.CreateTranslation(0f, railsOffsetY, currentSegmentZ); // Центр по X=0
+                Matrix4 centerTileModel = centerTileScale * centerTileTranslate;
+                planeShader.SetMatrix4("model", centerTileModel);
+                GL.DrawElements(PrimitiveType.Triangles, railPlaneIndices.Length, DrawElementsType.UnsignedInt, 0);
+
+                // --- 3. Рисуем ПРАВЫЕ плитки земли ---
+                groundRightTexture.Use(TextureUnit.Texture0); // Используем текстуру правой земли
+                Matrix4 rightTileScale = Matrix4.CreateScale(tileWidthSide, 1.0f, segmentLength); // Масштаб для одной правой плитки
+                for (int tileIndex = 1; tileIndex <= numSideTiles; tileIndex++)
+                {
+                    // X-координата центра текущей правой плитки
+                    float currentTileX = (tileWidthCenter / 2.0f) + (tileIndex - 0.5f) * tileWidthSide;
+                    Matrix4 rightTileTranslate = Matrix4.CreateTranslation(currentTileX, groundOffsetY, currentSegmentZ);
+                    Matrix4 rightTileModel = rightTileScale * rightTileTranslate;
+                    planeShader.SetMatrix4("model", rightTileModel);
+                    GL.DrawElements(PrimitiveType.Triangles, railPlaneIndices.Length, DrawElementsType.UnsignedInt, 0);
+                }
+            }
+
+            // Отвязываем VAO после использования
+            GL.BindVertexArray(0);
+
+
+            /*
             float planeScaleX = 10.0f; // Ширина плоскости
             float planeOffsetY = -1f; // Положение по Y (под поездом)
 
@@ -422,6 +502,7 @@ namespace ComputerGraphics_lab2
                 planeShader.SetMatrix4("model", segmentModel); // установка матрицы модели
                 GL.DrawElements(PrimitiveType.Triangles, railPlaneIndices.Length, DrawElementsType.UnsignedInt, 0);
             }
+            */
 
             // Рендер скайбокса
             GL.DepthFunc(DepthFunction.Lequal); // включение глубины для отрисовки скайбокса
@@ -452,7 +533,41 @@ namespace ComputerGraphics_lab2
         protected override void OnUpdateFrame(FrameEventArgs args) // обновление каждого кадра
         {
             if (!IsFocused) // Не обрабатываем ввод, если окно не в фокусе
-                return;
+            {
+                if (isInputCaptured)
+                {
+                    isInputCaptured = false;
+                    CursorState = CursorState.Normal;
+                    // Сообщаем камере, что следующее движение будет первым
+                    camera.ResetFirstMove();
+                }
+                return; // Не обрабатываем ввод, если окно не в фокусе
+            }
+
+            // Получаем состояния
+            MouseState mouse = MouseState;
+            KeyboardState input = KeyboardState;
+
+            if (KeyboardState.IsKeyPressed(Keys.F)) // обработак фокуса
+            {
+                isInputCaptured = !isInputCaptured;
+
+                if (isInputCaptured)
+                {
+                    CursorState = CursorState.Grabbed; // Захватываем и скрываем курсор
+                    camera.ResetFirstMove();
+                }
+                else
+                {
+                    CursorState = CursorState.Normal; // Освобождаем и показываем курсор
+                }
+            }
+
+            if (isInputCaptured)
+            {
+                camera.UpdateMouseLook(mouse, args);
+            }
+
             if (KeyboardState.IsKeyPressed(Keys.Tab))
                 showStats = !showStats; 
             if (showStats)
@@ -465,9 +580,6 @@ namespace ComputerGraphics_lab2
 
             if (KeyboardState.IsKeyDown(Keys.Escape)) // выход по нажатию клавиши Escape
                 Close();
-
-            MouseState mouse = MouseState;
-            KeyboardState input = KeyboardState;
 
             if (input.IsKeyDown(Keys.W) || input.IsKeyDown(Keys.Up)) // обработка движения паровоза
             {
@@ -486,9 +598,7 @@ namespace ComputerGraphics_lab2
 
             trainPosition += trainSpeed * (float)args.Time; // обновление позиции
 
-            camera.position = new Vector3(0f, 2f, - trainPosition + distanceBehind);
-
-            camera.UpdateMouseLook(mouse, args);
+            camera.position = new Vector3(0f, 4f, - trainPosition + distanceBehind);
 
             // логика переиспользования сегментов рельсов
             float cameraZ = camera.position.Z;
@@ -503,7 +613,7 @@ namespace ComputerGraphics_lab2
                     for (int j = 0; j < numSegments; j++)
                     {
                         if (segmentZOffsets[j] < mostNegativeZ) // i-ый сегмент дальше
-                        {
+                        { 
                             mostNegativeZ = segmentZOffsets[j];
                         }
                     }
