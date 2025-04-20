@@ -14,10 +14,9 @@ namespace ComputerGraphics_lab2
 {
         internal class Camera
         {
-            private float SPEED = 8f;
             private int SCREENWIDTH;
             private int SCREENHEIGHT;
-            private float SENSITIVITY = 100f;
+            private float SENSITIVITY = 3f;
 
             public Vector3 position;
             Vector3 up = Vector3.UnitY;
@@ -26,6 +25,7 @@ namespace ComputerGraphics_lab2
 
             private float pitch;
             private float yaw = -90.0f;
+
             private bool firstMove = true;
             public Vector2 lastPos;
 
@@ -34,53 +34,24 @@ namespace ComputerGraphics_lab2
                 SCREENWIDTH = width;
                 SCREENHEIGHT = height;
                 this.position = position;
+                UpdateVectors();
             }
 
             public Matrix4 GetViewMatrix()
             {
                 return Matrix4.LookAt(position, position + front, up);
             }
+
             public Matrix4 GetProjection()
             {
-                return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(60f), SCREENWIDTH / SCREENHEIGHT, 0.1f, 100f);
-            }
-
-            public void InputController(KeyboardState input, MouseState mouse, FrameEventArgs e)
-            {
-                if (input.IsKeyDown(Keys.W))
+                float aspectRatio = 1.0f;
+                if (SCREENHEIGHT > 0)
                 {
-                    position += front * SPEED * (float)e.Time;
+                    aspectRatio = (float)SCREENWIDTH / SCREENHEIGHT;
                 }
-                if (input.IsKeyDown(Keys.A))
-                {
-                    position -= right * SPEED * (float)e.Time;
-                }
-                if (input.IsKeyDown(Keys.S))
-                {
-                    position -= front * SPEED * (float)e.Time;
-                }
-                if (input.IsKeyDown(Keys.D))
-                {
-                    position += right * SPEED * (float)e.Time;
-                }
-                if (firstMove)
-                {
-                    lastPos = new Vector2(position.X, position.Y);
-                    firstMove = false;
-                }
-                else
-                {
-                    var deltaX = mouse.X - lastPos.X;
-                    var deltaY = mouse.Y - lastPos.Y;
-                    lastPos = new Vector2(mouse.X, mouse.Y);
-                    yaw += deltaX * SENSITIVITY * (float)e.Time;
-                    pitch -= deltaY * SENSITIVITY * (float)e.Time;
-                }
-                UpdateVectors();
-            }
-            public void Update(KeyboardState input, MouseState mouse, FrameEventArgs e)
-            {
-                InputController(input, mouse, e);
+                float nearPlane = 0.1f;
+                float farPlane = 10000f;
+                return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(60f), aspectRatio, nearPlane, farPlane);
             }
 
             private void UpdateVectors()
@@ -104,5 +75,46 @@ namespace ComputerGraphics_lab2
                 up = Vector3.Normalize(Vector3.Cross(right, front));
             }
 
-        }
+            public void UpdateMouseLook(MouseState mouse, FrameEventArgs e)
+            {
+                if (firstMove)
+                {
+                    // Инициализируем lastPos текущей позицией мыши
+                    lastPos = new Vector2(mouse.X, mouse.Y);
+                    firstMove = false;
+                }
+                else
+                {
+                    // Вычисляем смещение мыши с последнего кадра
+                    var deltaX = mouse.X - lastPos.X;
+                    var deltaY = mouse.Y - lastPos.Y;
+                    lastPos = new Vector2(mouse.X, mouse.Y); // Обновляем последнюю позицию
+
+                    // Применяем чувствительность и время кадра
+                    yaw += deltaX * SENSITIVITY * (float)e.Time;
+                    pitch -= deltaY * SENSITIVITY * (float)e.Time; // Y инвертирован
+
+                    // Ограничиваем угол pitch, чтобы избежать "переворота"
+                    if (pitch > 89.0f)
+                        pitch = 89.0f;
+                    if (pitch < -89.0f)
+                        pitch = -89.0f;
+
+                    // Обновляем векторы front, right и up на основе новых углов yaw и pitch
+                    UpdateVectors();
+                }
+            }
+
+            public void OnResize(int width, int height)
+            {
+                SCREENWIDTH = width;
+                SCREENHEIGHT = height;
+                // Сбросим firstMove, чтобы lastPos обновился после возможного изменения координат мыши
+                // Хотя при CursorState.Grabbed это может быть не нужно, но не помешает
+                firstMove = true;
+            }
+
+
+
+    }
 }

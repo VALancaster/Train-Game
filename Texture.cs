@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +18,9 @@ namespace ComputerGraphics_lab2
 {
     public class Texture
     {
-        public int textureID { get; private set; } // идентификатор текстуры {получить значение можно снаружи, а установить - только внутри}
+        public int textureID; // идентификатор текстуры 
+
+        protected Texture() { } // конструктор
 
         public Texture(string path) // конструктор
         {
@@ -42,37 +46,68 @@ namespace ComputerGraphics_lab2
 
         }
 
-        public void Use(TextureUnit unit = TextureUnit.Texture0) // использование текстуры
+        public virtual void Use(TextureUnit unit = TextureUnit.Texture0) // использование текстуры
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, textureID);
         }
 
-        public void Delete() // удаление текстуры
+        public virtual void Delete() // удаление текстуры
         {
             GL.DeleteTexture(textureID);
         }
     }
 
-    /*
+    
     public class CubemapTexture : Texture
     {
-        public CubemapTexture(string pathToCrossImage) // конструктор
+        private static readonly TextureTarget[] targets =
         {
-            Handle = GL.GenTexture();
-            GL.BindTexture(TextureTarget.TextureCubeMap, Handle);
+            TextureTarget.TextureCubeMapPositiveX,
+            TextureTarget.TextureCubeMapNegativeX,
+            TextureTarget.TextureCubeMapPositiveY,
+            TextureTarget.TextureCubeMapNegativeY,
+            TextureTarget.TextureCubeMapPositiveZ,
+            TextureTarget.TextureCubeMapNegativeZ
+        };
 
-            using (var image = new Bitmap(pathToCrossImage))
+        public CubemapTexture(string[] facePaths) // конструктор
+            : base()
+        {
+            if (facePaths.Length != 6)
             {
-
+                throw new ArgumentException("Cubemap requires 6 images (one for each face)");
             }
+
+            textureID = GL.GenTexture(); // создание пустой текстуры
+            GL.BindTexture(TextureTarget.TextureCubeMap, textureID); // привязывает текстуру к текстурному блоку
+
+            for (int i = 0; i < 6; i++)
+            {
+                var path = facePaths[i];
+                StbImage.stbi_set_flip_vertically_on_load(0); // Кубические текстуры не нужно переворачивать
+                ImageResult image = ImageResult.FromStream(File.OpenRead(path), ColorComponents.RedGreenBlueAlpha);
+                // загружает файл изображения в память и конвертирует его в формат с компонентами RGB
+                GL.TexImage2D(targets[i], 0, PixelInternalFormat.Rgba,
+                    image.Width, image.Height, 0,
+                    PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
+                // передает данные изображения в GPU
+            }
+
+            // Параметры обёртки и фильтрации
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.TextureCubeMap, TextureParameterName.TextureWrapR, (int)TextureWrapMode.ClampToEdge);
+
+            GL.BindTexture(TextureTarget.TextureCubeMap, 0); // Отвязка
         }
 
         public override void Use(TextureUnit unit = TextureUnit.Texture0) // использование текстуры
         {
             GL.ActiveTexture(unit);
-            GL.BindTexture(TextureTarget.TextureCubeMap, Handle);
+            GL.BindTexture(TextureTarget.TextureCubeMap, textureID);
         }
     }
-    */
 }

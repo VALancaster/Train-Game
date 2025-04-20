@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Textures\" />
+    <Folder Include="Textures\Skybox\" />
   </ItemGroup>
 
 </Project>

@@ -24,10 +24,10 @@ C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\Compu
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.AssemblyInfoInputs.cache
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.AssemblyInfo.cs
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.csproj.CoreCompileInputs.cache
+C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.sourcelink.json
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\Computer.965827AB.Up2Date
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.dll
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\refint\ComputerGraphics_lab2.dll
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.pdb
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.genruntimeconfig.cache
 C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ref\ComputerGraphics_lab2.dll
-C:\Users\vkutergi\Computer Graphics\ComputerGraphics_lab2\obj\Debug\net8.0\ComputerGraphics_lab2.sourcelink.json
