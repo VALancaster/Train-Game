@@ -22,10 +22,14 @@ namespace ComputerGraphics_lab2
         private Shader skyboxShader;
         private Shader planeShader;
         private Camera camera;
-        private bool showStats = false;
 
-        private Texture trainTexture;
-        //private Texture railTexture; 
+        private Texture trainFrontTexture;
+        private Texture trainBackTexture;
+        private Texture trainLeftTexture;
+        private Texture trainRightTexture;
+        private Texture trainTopTexture;
+        private Texture trainBottomTexture;
+
         private Texture railsCenterTexture;
         private Texture groundLeftTexture;
         private Texture groundRightTexture;
@@ -80,7 +84,7 @@ namespace ComputerGraphics_lab2
             
         }; // вершины скайбокс-куба
 
-        private List<Vector3> vertices = new List<Vector3>()
+        private List<Vector3> trainVertices = new List<Vector3>()
         {
             //front face
 			new Vector3(-0.5f,  0.5f, 0.5f), //top-left vertice
@@ -122,37 +126,20 @@ namespace ComputerGraphics_lab2
             new Vector3(-0.5f, 0.0f, -0.5f)
         }; // вершины плоскости рельсов и земли
 
-        private List<Vector2> texCoords = new List<Vector2>()
-        {
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 0f),
-
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 0f),
-
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 0f),
-
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 0f),
-
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 0f),
-
-            new Vector2(0f, 1f),
-            new Vector2(1f, 1f),
-            new Vector2(1f, 0f),
-            new Vector2(0f, 0f)
+        private List<Vector2> trainTexCoords = new List<Vector2>()
+        {   
+            // front face (0-3) UVs
+            new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
+            // right face (4-7) UVs
+            new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
+            // back face (8-11) UVs (!!!ВОЗМОЖНО, НУЖНО ОТЗЕРКАЛИТЬ ПО X!!!)
+            new Vector2(1.0f, 1.0f), new Vector2(0.0f, 1.0f), new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), // Попробуй так для back
+            // left face (12-15) UVs (!!!ВОЗМОЖНО, НУЖНО ОТЗЕРКАЛИТЬ ПО X!!!)
+            new Vector2(1.0f, 1.0f), new Vector2(0.0f, 1.0f), new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), // Попробуй так для left
+            // top face (16-19) UVs
+            new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
+            // bottom face (20-23) UVs
+            new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
         }; // координаты текстуры
 
         private List<Vector2> railPlaneTexCoords = new List<Vector2>()
@@ -165,7 +152,7 @@ namespace ComputerGraphics_lab2
 
         private uint[] railPlaneIndices = { 0, 1, 2, 2, 3, 0 }; // порядок отрисовки вершин плоскости рельсов и земли
 
-        private uint[] indices =
+        private uint[] trainIndices =
         {
             // Front face (+Z) - CCW
             0, 2, 1, // Был 0, 1, 2
@@ -194,10 +181,10 @@ namespace ComputerGraphics_lab2
 
         private List<Matrix4> railTransforms = new List<Matrix4>(); // рельсы
 
-        private int VAO; // объект массива вершин (дескриптор)
-        private int VBO; // объект буфера вершин (дескриптор)
-        private int EBO; // объект буфера элементов (дескриптор)
-        private int textureVBO; // объект буфера вершин для текстуры (дескриптор)
+        private int trainVAO; // объект массива вершин (дескриптор)
+        private int trainVBO; // объект буфера вершин (дескриптор)
+        private int trainEBO; // объект буфера элементов (дескриптор)
+        private int trainTextureVBO; // объект буфера вершин для текстуры (дескриптор)
         private float yRot = 0f;
 
         private int skyboxVAO;
@@ -205,8 +192,8 @@ namespace ComputerGraphics_lab2
 
         private int railVAO;
         private int railVBO;
-        private int railTexCoordVBO;
         private int railEBO;
+        private int railTexCoordVBO;
 
         private int numSegments = 20; // Количество сегментов (текстур на плоскости)
         private float segmentLength = 100.0f; // Длина одного сегмента
@@ -214,13 +201,17 @@ namespace ComputerGraphics_lab2
 
         private float trainSpeed = 0f;
         private float trainPosition = 0f;
-        private float acceleration = 500f;
-        private float maxSpeed = 1000f;
-        private float friction = 0.98f;
+        private float acceleration = 250f;
+        private float maxSpeed = 20000f;
+        private float friction = 0.995f;
         private float railCount = 100; // число рельсов
         private float spacing = 1.0f; // расстояние между рельсами
         private float distanceBehind = 12f; // расстояние, на котором камера будет позади поезда
+
+        // Флаги состояний
         private bool isInputCaptured = true; // Флаг захвата ввода
+        private bool isFreeCameraMode = false;
+        private bool showStats = false;
 
         public Game(int width, int height) : base
         (GameWindowSettings.Default, new NativeWindowSettings() { Title = "3D Train Game" })
@@ -232,31 +223,31 @@ namespace ComputerGraphics_lab2
 
         private void InitializeBuffers()
         {
-            VAO = GL.GenVertexArray(); // создание объекта массива вершин
-            VBO = GL.GenBuffer(); // cоздание объекта буффера вершин
-            EBO = GL.GenBuffer(); // cоздание объекта буффера элементов
-            textureVBO = GL.GenBuffer(); // cоздание объекта буфера вершин для текстуры
+            trainVAO = GL.GenVertexArray(); // создание объекта массива вершин
+            trainVBO = GL.GenBuffer(); // cоздание объекта буффера вершин
+            trainEBO = GL.GenBuffer(); // cоздание объекта буффера элементов
+            trainTextureVBO = GL.GenBuffer(); // cоздание объекта буфера вершин для текстуры
 
             // вершины
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO); // привязка VBO к целевому буфферу вершин
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Count * Vector3.SizeInBytes, vertices.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, trainVBO); // привязка VBO к целевому буфферу вершин
+            GL.BufferData(BufferTarget.ArrayBuffer, trainVertices.Count * Vector3.SizeInBytes, trainVertices.ToArray(), BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw
-            GL.BindVertexArray(VAO); // привязка VAO 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+            GL.BindVertexArray(trainVAO); // привязка VAO 
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             GL.EnableVertexAttribArray(0); // включение атрибута вершин
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0); // Отвязка VBO
 
             // примитивы
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO); // привязка EBO к целевому буфферу элементов
-            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(uint), indices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, trainEBO); // привязка EBO к целевому буфферу элементов
+            GL.BufferData(BufferTarget.ElementArrayBuffer, trainIndices.Length * sizeof(uint), trainIndices, BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0); // отвязка EBO
 
             // текстурные координаты
-            GL.BindBuffer(BufferTarget.ArrayBuffer, textureVBO); // привязка VBO к целевому буферу вершин
-            GL.BufferData(BufferTarget.ArrayBuffer, texCoords.Count * Vector2.SizeInBytes, texCoords.ToArray(), BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, trainTextureVBO); // привязка VBO к целевому буферу вершин
+            GL.BufferData(BufferTarget.ArrayBuffer, trainTexCoords.Count * Vector2.SizeInBytes, trainTexCoords.ToArray(), BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw 
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 0, 0); // Настройка атрибута вершин (показываем на слот номер 1)
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, Vector2.SizeInBytes, 0); // Настройка атрибута вершин (показываем на слот номер 1)
             GL.EnableVertexAttribArray(1); // включение атрибута вершин
 
             GL.BindVertexArray(0); // Отвязка VAO
@@ -325,8 +316,13 @@ namespace ComputerGraphics_lab2
             skyboxShader = new Shader("Skybox.vert", "Skybox.frag");
             planeShader = new Shader("Plane.vert", "Plane.frag");
 
-            trainTexture = new Texture("../../../Textures/bombardiro_crocodilo.jpg");
-            // railTexture = new Texture("../../../Textures/wide_desert_rails.jpg");
+            trainFrontTexture = new Texture("../../../Textures/Train/train_front.png"); // УКАЖИ ПРАВИЛЬНЫЕ ПУТИ И РАСШИРЕНИЯ!
+            trainBackTexture = new Texture("../../../Textures/Train/train_back.png");
+            trainLeftTexture = new Texture("../../../Textures/Train/train_left.png");
+            trainRightTexture = new Texture("../../../Textures/Train/train_right.png");
+            trainTopTexture = new Texture("../../../Textures/Train/train_top.png");
+            trainBottomTexture = new Texture("../../../Textures/Train/train_bottom.png");
+            
             railsCenterTexture = new Texture("../../../Textures/rails_center.jpg");
             groundLeftTexture = new Texture("../../../Textures/ground_left.jpg");
             groundRightTexture = new Texture("../../../Textures/ground_right.jpg");
@@ -370,24 +366,38 @@ namespace ComputerGraphics_lab2
         {
             base.OnUnload();
 
-            GL.DeleteBuffer(VAO);
-            GL.DeleteBuffer(VBO);
-            GL.DeleteBuffer(EBO);
+            // Удаляем буферы поезда
+            GL.DeleteBuffer(trainVBO);
+            GL.DeleteBuffer(trainTextureVBO);
+            GL.DeleteBuffer(trainEBO);
+            GL.DeleteVertexArray(trainVAO);
 
-            GL.DeleteBuffer(textureVBO);
-            GL.DeleteVertexArray(skyboxVAO);
+            // Удаляем буферы плоскости рельсов
+            GL.DeleteBuffer(railVBO);
+            GL.DeleteBuffer(railTexCoordVBO);
+            GL.DeleteBuffer(railEBO);
+            GL.DeleteVertexArray(railVAO);
+
+            // Удаляем буферы скайбокса
             GL.DeleteBuffer(skyboxVBO);
+            GL.DeleteVertexArray(skyboxVAO);
 
-            trainTexture.Delete();
-            // railTexture.Delete();
-            railsCenterTexture.Delete();
-            groundLeftTexture.Delete();
-            groundRightTexture.Delete();
-            cubemapTexture.Delete();
+            // Удаляем текстуры
+            trainFrontTexture?.Delete();
+            trainBackTexture?.Delete();
+            trainLeftTexture?.Delete();
+            trainRightTexture?.Delete();
+            trainTopTexture?.Delete();
+            trainBottomTexture?.Delete();
+            railsCenterTexture?.Delete();
+            groundLeftTexture?.Delete();
+            groundRightTexture?.Delete();
+            cubemapTexture?.Delete();
 
-            shaderProgram.DeleteShader();
-            skyboxShader.DeleteShader();
-            planeShader.DeleteShader();
+            // Удаляем шейдеры
+            shaderProgram?.DeleteShader();
+            skyboxShader?.DeleteShader();
+            planeShader?.DeleteShader();
         }
 
         protected override void OnRenderFrame(FrameEventArgs args) // рендеринг каждого кадра
@@ -397,23 +407,45 @@ namespace ComputerGraphics_lab2
             GL.ClearColor(0f, 0.75f, 0.9f, 1f); // цвет фона
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            // Матрицы камеры
             Matrix4 viewMatrix = camera.GetViewMatrix();
             Matrix4 projectionMatrix = camera.GetProjection();
 
-            // Рендер паровоза
+
+
+            // Рендер паровоза (по граням)
             shaderProgram.UseShader(); // активирует шейдерную программу
             shaderProgram.SetMatrix4("view", viewMatrix);
             shaderProgram.SetMatrix4("projection", projectionMatrix);
-            shaderProgram.SetInt("texture0", 0);
-            trainTexture.Use(TextureUnit.Texture0); // использование текстуры паровоза
+            shaderProgram.SetInt("texture0", 0); // Используем юнит 0
+            // trainTexture.Use(TextureUnit.Texture0); // использование текстуры паровоза
 
-            GL.BindVertexArray(VAO); // Привязываем VAO паровоза
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
+            GL.BindVertexArray(trainVAO); // Привязываем VAO паровоза
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, trainEBO);
 
             // поезд не симметричен относительно центра рельсов (подвину чуть вправо по x)
-            Matrix4 trainTransform = Matrix4.CreateScale(4f, 4f, 4f)*Matrix4.CreateTranslation(0.3f, 0f, -trainPosition); 
+            Matrix4 trainTransform = Matrix4.CreateScale(4f, 4f, 8f) * Matrix4.CreateTranslation(0.3f, 1f, -trainPosition); 
             shaderProgram.SetMatrix4("model", trainTransform); // установка матрицы модели
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+
+            int faceIndexCount = 6;
+
+            trainBackTexture?.Use(TextureUnit.Texture0);
+            GL.DrawElements(PrimitiveType.Triangles, faceIndexCount, DrawElementsType.UnsignedInt, 0 * sizeof(uint));
+
+            trainRightTexture?.Use(TextureUnit.Texture0);
+            GL.DrawElements(PrimitiveType.Triangles, faceIndexCount, DrawElementsType.UnsignedInt, 6 * sizeof(uint));
+
+            trainFrontTexture?.Use(TextureUnit.Texture0);
+            GL.DrawElements(PrimitiveType.Triangles, faceIndexCount, DrawElementsType.UnsignedInt, 12 * sizeof(uint));
+
+            trainLeftTexture?.Use(TextureUnit.Texture0);
+            GL.DrawElements(PrimitiveType.Triangles, faceIndexCount, DrawElementsType.UnsignedInt, 18 * sizeof(uint));
+
+            trainTopTexture?.Use(TextureUnit.Texture0);
+            GL.DrawElements(PrimitiveType.Triangles, faceIndexCount, DrawElementsType.UnsignedInt, 24 * sizeof(uint));
+
+            trainBottomTexture?.Use(TextureUnit.Texture0);
+            GL.DrawElements(PrimitiveType.Triangles, faceIndexCount, DrawElementsType.UnsignedInt, 30 * sizeof(uint));
 
             // Рендер плоскости рельсов
             planeShader.UseShader(); // активирует шейдерную программу
@@ -483,27 +515,6 @@ namespace ComputerGraphics_lab2
             GL.BindVertexArray(0);
 
 
-            /*
-            float planeScaleX = 10.0f; // Ширина плоскости
-            float planeOffsetY = -1f; // Положение по Y (под поездом)
-
-            float tileWidth = planeScaleX;
-            float tileHeight = 2.0f;
-
-            Vector2 texScale = new Vector2(planeScaleX / tileWidth, segmentLength / tileHeight);
-            planeShader.SetVector2("texScale", texScale); // передаем масштаб текстуры в шейдер
-
-            Matrix4 segmentScaleMatrix = Matrix4.CreateScale(planeScaleX, 1.0f, segmentLength); // матриеца масштабирования для сегмента
-
-            for (int i = 0; i < numSegments; i++)
-            {
-                Matrix4 segmentTranslateMatrix = Matrix4.CreateTranslation(0f, planeOffsetY, segmentZOffsets[i] - segmentLength / 2.0f);
-                Matrix4 segmentModel = segmentScaleMatrix * segmentTranslateMatrix;
-                planeShader.SetMatrix4("model", segmentModel); // установка матрицы модели
-                GL.DrawElements(PrimitiveType.Triangles, railPlaneIndices.Length, DrawElementsType.UnsignedInt, 0);
-            }
-            */
-
             // Рендер скайбокса
             GL.DepthFunc(DepthFunction.Lequal); // включение глубины для отрисовки скайбокса
             GL.Disable(EnableCap.CullFace);
@@ -563,9 +574,40 @@ namespace ComputerGraphics_lab2
                 }
             }
 
+            if (KeyboardState.IsKeyPressed(Keys.G))
+            {
+                isFreeCameraMode = !isFreeCameraMode;
+                if (isFreeCameraMode)
+                {
+                    trainSpeed = 0f;
+                }
+            }
+
             if (isInputCaptured)
             {
                 camera.UpdateMouseLook(mouse, args);
+            }
+
+            if (isFreeCameraMode)
+            {
+                camera.HandleKeyboardInput(input, args);
+                trainSpeed = 0f;
+            }
+            else
+            {
+                if (input.IsKeyDown(Keys.W) || input.IsKeyDown(Keys.Up)) // обработка движения паровоза
+                {
+                    trainSpeed += acceleration * (float)args.Time;
+                    if (trainSpeed > maxSpeed)
+                        trainSpeed = maxSpeed;
+                }
+                else if (input.IsKeyDown(Keys.S) || input.IsKeyDown(Keys.Down))
+                {
+                    trainSpeed -= acceleration * (float)args.Time;
+                    if (trainSpeed < 0f)
+                        trainSpeed = 0f;
+                }
+                trainSpeed *= friction; // трение (замедление)
             }
 
             if (KeyboardState.IsKeyPressed(Keys.Tab))
@@ -580,25 +622,14 @@ namespace ComputerGraphics_lab2
 
             if (KeyboardState.IsKeyDown(Keys.Escape)) // выход по нажатию клавиши Escape
                 Close();
-
-            if (input.IsKeyDown(Keys.W) || input.IsKeyDown(Keys.Up)) // обработка движения паровоза
-            {
-                trainSpeed += acceleration * (float)args.Time;
-                if (trainSpeed > maxSpeed)
-                    trainSpeed = maxSpeed;
-            }
-            else if (input.IsKeyDown(Keys.S) || input.IsKeyDown(Keys.Down))
-            {
-                trainSpeed -= acceleration * (float)args.Time;
-                if (trainSpeed < 0f)
-                    trainSpeed = 0f;
-            }
-
-            trainSpeed *= friction; // трение (замедление)
+            
 
             trainPosition += trainSpeed * (float)args.Time; // обновление позиции
 
-            camera.position = new Vector3(0f, 4f, - trainPosition + distanceBehind);
+            if (!isFreeCameraMode)
+            {
+                camera.position = new Vector3(0f, 5f, -trainPosition + distanceBehind);
+            }
 
             // логика переиспользования сегментов рельсов
             float cameraZ = camera.position.Z;

@@ -14,6 +14,7 @@ namespace ComputerGraphics_lab2
 {
         internal class Camera
         {
+            private const float CAMERA_MOVE_SPEED = 10f;
             private int SCREENWIDTH;
             private int SCREENHEIGHT;
             private float SENSITIVITY = 3f;
@@ -24,7 +25,7 @@ namespace ComputerGraphics_lab2
             Vector3 right = Vector3.UnitX;
 
             private float pitch;
-            private float yaw = -90.0f;
+            private float yaw;
 
             private bool firstMove = true;
             public Vector2 lastPos;
@@ -34,7 +35,40 @@ namespace ComputerGraphics_lab2
                 SCREENWIDTH = width;
                 SCREENHEIGHT = height;
                 this.position = position;
+                this.pitch = -10.0f;
+                this.yaw = -90.0f;
                 UpdateVectors();
+            }
+
+            public void HandleKeyboardInput(KeyboardState input, FrameEventArgs e)
+            {
+                float speed = CAMERA_MOVE_SPEED * (float)e.Time; // Скорость с учетом времени кадра
+
+                if (input.IsKeyDown(Keys.W))
+                {
+                    position += front * speed; // Движение вперед по направлению взгляда
+                }
+                if (input.IsKeyDown(Keys.S))
+                {
+                    position -= front * speed; // Движение назад
+                }
+                if (input.IsKeyDown(Keys.A))
+                {
+                    position -= right * speed; // Движение влево (перпендикулярно взгляду)
+                }
+                if (input.IsKeyDown(Keys.D))
+                {
+                    position += right * speed; // Движение вправо
+                }
+                // Можно добавить движение вверх/вниз, если нужно
+                if (input.IsKeyDown(Keys.Space))
+                {
+                    position += up * speed; // Вверх
+                }
+                if (input.IsKeyDown(Keys.LeftShift)) // Или LeftControl
+                {
+                    position -= up * speed; // Вниз
+                }
             }
 
             public void ResetFirstMove() // будет сообщать камере, что следующее движение будет первым, чтобы она не прыгнула из-за накопленного смещения

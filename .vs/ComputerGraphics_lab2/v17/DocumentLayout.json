@@ -11,40 +11,28 @@
       "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\plane.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\plane.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\skybox.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\skybox.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\shader.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\shader.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\textures\\train\\train_left.png||{58961B49-13E0-48C0-9258-13CBC4D40279}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:textures\\train\\train_left.png||{58961B49-13E0-48C0-9258-13CBC4D40279}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\shader.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\shader.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\skybox.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\skybox.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\plane.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\plane.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shaders\\shader.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shaders\\shader.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|c:\\users\\vkutergi\\computer graphics\\computergraphics_lab2\\texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4D3604B-87C4-4F68-B4CA-02F6E35168C0}|ComputerGraphics_lab2.csproj|solutionrelative:texture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,80 +42,44 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Plane.frag",
-              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Plane.frag",
-              "RelativeDocumentMoniker": "Shaders\\Plane.frag",
-              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Plane.frag",
-              "RelativeToolTip": "Shaders\\Plane.frag",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-19T21:40:29.411Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Plane.vert",
-              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Plane.vert",
-              "RelativeDocumentMoniker": "Shaders\\Plane.vert",
-              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Plane.vert",
-              "RelativeToolTip": "Shaders\\Plane.vert",
-              "ViewState": "AgIAAAQAAACg/////38ZwBAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-19T21:40:18.165Z",
+              "Title": "train_left.png",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Textures\\Train\\train_left.png",
+              "RelativeDocumentMoniker": "Textures\\Train\\train_left.png",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Textures\\Train\\train_left.png",
+              "RelativeToolTip": "Textures\\Train\\train_left.png",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
+              "WhenOpened": "2025-04-27T20:32:54.709Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Skybox.frag",
-              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Skybox.frag",
-              "RelativeDocumentMoniker": "Shaders\\Skybox.frag",
-              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Skybox.frag",
-              "RelativeToolTip": "Shaders\\Skybox.frag",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-14T11:17:23.404Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Skybox.vert",
-              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Skybox.vert",
-              "RelativeDocumentMoniker": "Shaders\\Skybox.vert",
-              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Skybox.vert",
-              "RelativeToolTip": "Shaders\\Skybox.vert",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-14T11:17:02.079Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Shader.frag",
-              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.frag",
-              "RelativeDocumentMoniker": "Shaders\\Shader.frag",
-              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.frag",
-              "RelativeToolTip": "Shaders\\Shader.frag",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-10T13:51:28.798Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "Shader.vert",
               "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.vert",
               "RelativeDocumentMoniker": "Shaders\\Shader.vert",
               "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.vert",
               "RelativeToolTip": "Shaders\\Shader.vert",
-              "ViewState": "AgIAAAQAAABgZmZmZiYgwAQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-10T13:50:03.284Z"
+              "WhenOpened": "2025-04-27T19:04:14.139Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Shader.frag",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.frag",
+              "RelativeDocumentMoniker": "Shaders\\Shader.frag",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shaders\\Shader.frag",
+              "RelativeToolTip": "Shaders\\Shader.frag",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-04-27T19:04:13.274Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -137,7 +89,7 @@
               "RelativeDocumentMoniker": "Texture.cs",
               "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Texture.cs",
               "RelativeToolTip": "Texture.cs",
-              "ViewState": "AgIAABQAAAAAAJ2ZmZmZv1UAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-13T10:21:44.92Z"
             },
@@ -149,10 +101,22 @@
               "RelativeDocumentMoniker": "Camera.cs",
               "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Camera.cs",
               "RelativeToolTip": "Camera.cs",
-              "ViewState": "AgIAAF8AAABAnZmZmRkgwF8AAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAOAwwBsAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-10T13:48:09.03Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Shader.cs",
+              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shader.cs",
+              "RelativeDocumentMoniker": "Shader.cs",
+              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shader.cs",
+              "RelativeToolTip": "Shader.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAswGgAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T13:47:32.05Z"
             },
             {
               "$type": "Document",
@@ -162,32 +126,20 @@
               "RelativeDocumentMoniker": "Game.cs",
               "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Game.cs",
               "RelativeToolTip": "Game.cs",
-              "ViewState": "AgIAADsCAACADM3MzMwpwDcCAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAGwCAAAANDMzM7MrwHYCAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-19T21:34:14.185Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Shader.cs",
-              "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shader.cs",
-              "RelativeDocumentMoniker": "Shader.cs",
-              "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Shader.cs",
-              "RelativeToolTip": "Shader.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-10T13:47:32.05Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\vkutergi\\Computer Graphics\\ComputerGraphics_lab2\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-10T13:42:33.485Z"
             }
