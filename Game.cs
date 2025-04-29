@@ -132,9 +132,9 @@ namespace ComputerGraphics_lab2
             new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
             // right face (4-7) UVs
             new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
-            // back face (8-11) UVs (!!!ВОЗМОЖНО, НУЖНО ОТЗЕРКАЛИТЬ ПО X!!!)
+            // back face (8-11) UVs 
             new Vector2(1.0f, 1.0f), new Vector2(0.0f, 1.0f), new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), // Попробуй так для back
-            // left face (12-15) UVs (!!!ВОЗМОЖНО, НУЖНО ОТЗЕРКАЛИТЬ ПО X!!!)
+            // left face (12-15) UVs 
             new Vector2(1.0f, 1.0f), new Vector2(0.0f, 1.0f), new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), // Попробуй так для left
             // top face (16-19) UVs
             new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f),
@@ -178,6 +178,7 @@ namespace ComputerGraphics_lab2
             20, 22, 21,// Был 20, 21, 22
             22, 20, 23 // Был 22, 23, 20
         }; // порядок отрисовки вершин
+        
 
         private List<Matrix4> railTransforms = new List<Matrix4>(); // рельсы
 
@@ -265,7 +266,7 @@ namespace ComputerGraphics_lab2
             GL.BufferData(BufferTarget.ArrayBuffer, railPlaneVertices.Count * Vector3.SizeInBytes, railPlaneVertices.ToArray(), BufferUsageHint.StaticDraw);
             // копирует данные вершин в GPU-память с использованим параметра StaticDraw
             GL.BindVertexArray(railVAO); // привязка VAO 
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
+             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             GL.EnableVertexAttribArray(0); // включение атрибута вершин
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0); // Отвязка VBO
 
@@ -359,6 +360,8 @@ namespace ComputerGraphics_lab2
             }
 
             camera.ResetFirstMove();
+
+            // Console.WriteLine();
             // ShowVersionInfo();
         }
 
